@@ -1,0 +1,79 @@
+package frame;
+
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class MyPanel extends JPanel {
+    private JTextField a;
+    private JTextField b;
+    private JLabel result;
+
+    private MyBytton equals;
+
+    public MyPanel(){
+        setLayout(new FlowLayout());
+
+
+        a = new JTextField("              ");
+        b = new JTextField("              ");
+        a.requestFocus(true);
+        b.requestFocus(true);
+        a.setPreferredSize(new Dimension( 50 , 30 ));
+        b.setPreferredSize(new Dimension( 50 , 30 ));
+
+        LabelOperators labelOperators = new LabelOperators();
+
+        equals = new MyBytton("=");
+        equals.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(labelOperators.getOperation()==MyOperation.DIVIDE) {
+                    if (Double.valueOf(b.getText().trim()) != 0.0) {
+
+
+                        result.setText(
+                                String.valueOf(
+                                        labelOperators.getOperation().result(
+                                                Double.valueOf(a.getText().trim()),
+                                                Double.valueOf(b.getText().trim())
+                                        )
+                                )
+                        );
+                    } else {
+                        result.setText("Деление на ноль невозможно");
+                    }
+                }
+                else{
+                    result.setText(String.valueOf(
+                            labelOperators.getOperation().result(
+                                    Double.valueOf(a.getText().trim()),
+                                    Double.valueOf(b.getText().trim())
+                            )
+                    ));
+                }
+            }
+        });
+        result = new JLabel("         ");
+        result.setOpaque(true);
+        result.setPreferredSize(new Dimension(300,120));
+        result.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+
+        JLabel labelC = new JLabel();
+        labelC.setOpaque(true);
+        labelC.setPreferredSize(new Dimension(250,95));
+        labelC.setLayout(new FlowLayout());
+
+        labelC.add(a);
+        labelC.add(labelOperators);
+        labelC.add(b);
+        add(labelC);
+        add(equals);
+        add(result);
+    }
+}
